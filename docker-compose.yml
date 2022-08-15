@@ -1,3 +1,6 @@
 version: '3'
-frontend: 
-  
+services:
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD = admin
