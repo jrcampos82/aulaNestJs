@@ -27,20 +27,20 @@ export class CatsController {
   }
 
   @Get('find/:id')
-  findOneMore(@Param('id') id: number): string {
-    return `encontrei um outro cat com id ${id}`;
+  findOneMore(@Param('id') id: number) {
+    return this.catsService.findOne(id);
   }
 
   @Post()
   async create(@Body() createCatDto: CreateCatDto) {
     // return `estou criando um cat de ${createCatDto.age}
     // anos chamado ${createCatDto.name}`;
-    await this.catsService.create(createCatDto);
+    this.catsService.create(createCatDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateCat: CreateCatDto): string {
-    return 'update cats';
+  update(@Param('id') id: number, @Body() updateCat: CreateCatDto) {
+    this.catsService.update(updateCat, id);
   }
 
   @Delete(':id')
