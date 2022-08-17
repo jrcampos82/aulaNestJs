@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { CreateCatDto } from './cats/dto/cats.dto';
+import { CreateCat } from './cats/entity/create.cat';
 
 export const databaseProviders = [
   {
@@ -11,8 +12,9 @@ export const databaseProviders = [
         port: 3306,
         username: 'root',
         password: 'admin',
-        database: 'catsapp',
-        entities: [CreateCatDto],
+        database: 'animals',
+        // entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+        entities: [CreateCat],
         synchronize: true,
         logging: true,
       });

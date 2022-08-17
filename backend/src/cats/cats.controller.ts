@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/cats.dto';
+import { CreateCat } from './entity/create.cat';
 
 // CatService catService = new CatService();
 
@@ -17,7 +18,7 @@ export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Get()
-  findAll(): CreateCatDto[] {
+  findAll(): Promise<CreateCat[]> {
     return this.catsService.findAll();
   }
 
@@ -32,10 +33,10 @@ export class CatsController {
   }
 
   @Post()
-  async create(@Body() createCatDto: CreateCatDto) {
+  async create(@Body() createCat: CreateCat) {
     // return `estou criando um cat de ${createCatDto.age}
     // anos chamado ${createCatDto.name}`;
-    this.catsService.create(createCatDto);
+    this.catsService.create(createCat);
   }
 
   @Put(':id')
