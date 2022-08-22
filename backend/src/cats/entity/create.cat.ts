@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class CreateCat {
-  @PrimaryGeneratedColumn()
+export class Cat {
+  @PrimaryGeneratedColumn('uuid')
   id: string; // uuid
   @Column()
   name: string;

@@ -8,8 +8,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
-import { CreateCatDto } from './dto/cats.dto';
-import { CreateCat } from './entity/create.cat';
+import { CatDto } from './dto/cats.dto';
+import { Cat } from './entity/create.cat';
 
 // CatService catService = new CatService();
 
@@ -18,34 +18,29 @@ export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Get()
-  findAll(): Promise<CreateCat[]> {
+  findAll(): Promise<Cat[]> {
     return this.catsService.findAll();
   }
 
   @Get(':id')
-  getOne(@Param() params): string {
-    return `encontrei o bichano com id ${params.id}`;
-  }
-
-  @Get('find/:id')
-  findOneMore(@Param('id') id: number) {
+  getOne(@Param('id') id: string) {
     return this.catsService.findOne(id);
   }
 
   @Post()
-  async create(@Body() createCat: CreateCat) {
-    // return `estou criando um cat de ${createCatDto.age}
-    // anos chamado ${createCatDto.name}`;
-    this.catsService.create(createCat);
+  async create(@Body() Cat: Cat) {
+    // return `estou criando um cat de ${CatDto.age}
+    // anos chamado ${CatDto.name}`;
+    this.catsService.create(Cat);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateCat: CreateCatDto) {
-    this.catsService.update(updateCat, id);
+  update(@Param('id') id: number, @Body() updateCat: CatDto) {
+    // this.catsService.update(updateCat, id);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): string {
-    return 'delete cat';
+  delete(@Param('id') id: string) {
+    return this.catsService.remove(id);
   }
 }

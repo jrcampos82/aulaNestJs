@@ -1,40 +1,44 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateCatDto } from './dto/cats.dto';
-import { CreateCat } from './entity/create.cat';
+import { CatDto } from './dto/cats.dto';
+import { Cat } from './entity/create.cat';
 
 @Injectable()
 export class CatsService {
-  private cats: CreateCatDto[] = [];
+  private cats: CatDto[] = [];
 
   constructor(
-    @Inject('CATS_REPOSITORY')
-    private catsRepository: Repository<CreateCat>,
+    @InjectRepository(Cat)
+    private catsRepository: Repository<Cat>,
   ) {}
 
-  create(cat: CreateCat) {
-    // inserir no banco de dados usando o repository
-    // this.cats.push(cat);
+  create(cat: Cat) {
     this.catsRepository.create(cat);
+    this.catsRepository.insert(cat);
   }
 
-  async findAll(): Promise<CreateCat[]> {
+  async findAll(): Promise<Cat[]> {
     // buscará todos os elementos do bd
-    return this.catsRepository.find();
+    return await this.catsRepository.find();
   }
 
-  findOne(id: number) {
-    const cat = this.cats.filter((value) => value.id === id);
-    return cat; // filter, map
+  async findOne(id: string): Promise<Cat> {
+    // const cat = this.cats.filter((value) => value.id === id);
+    return await this.catsRepository.findOneBy({ id });
   }
 
-  remove(id: number) {
-    const cats_remove = this.cats.filter((value) => value.id !== id);
-    this.cats = cats_remove;
+  async remove(id: string) {
+    // const cats_remove = this.cats.filter((value) => value.id !== id);
+    // this.cats = cats_remove;
+    return await this.catsRepository.delete(id);
   }
 
-  update(createCatDto: CreateCatDto, id: number) {
-    const cat = this.findOne(createCatDto.id);
+  async update(CatToUpdate: CatDto, id: string): Promise<Cat> {
+    const cat = await this.catsRepository.findOneBy({ id });
+    const updated = Object.assign(CatToUpdate, cat);
+
+    return await this.catsRepository.save(updated);
 
     // atualizar ele na lista
   }
